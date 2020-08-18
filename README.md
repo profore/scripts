@@ -1,4 +1,4 @@
-# @pofore/script
+# @pofore/scripts
 
 > 个人的前端工作流脚本集
 
