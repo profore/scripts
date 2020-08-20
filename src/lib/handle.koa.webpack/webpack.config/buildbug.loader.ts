@@ -17,9 +17,17 @@
  *  @ ./node_modules/_koa-convert@1.2.0@koa-convert/index.js
  *  @ ./node_modules/_koa@2.13.0@koa/lib/application.js
  *  @ ./src/index.js
+ *
+ * 3.打包tablestore时遇到
+ * Error: Cannot find module 'domain'
+ * 原因是tablestore自己封装了一层require逻辑导致webpack不能识别模块
+ * TableStore.util.nodeRequire('domain')
+ * 改逻辑是用来判断是否是node环境, 这里注定是node环境,所以直接替换成
+ * require('domain')
  */
 export default (source:string):string => {
   return source
     .replace('require = GENTLY.hijack(require)', '')
     // .replace("const Promise = require('any-promise')", '')
+    .replace("TableStore.util.nodeRequire('domain')", "require('domain')")
 }

@@ -8,6 +8,8 @@ import figlet from 'figlet'
 import libDev from '../lib/dev'
 // build 业务逻辑
 import libBuild from '../lib/build'
+// deploy 业务逻辑
+import libDeploy from '../lib/deploy'
 
 // package.json
 const packagejson = require('../../package.json')
@@ -35,6 +37,12 @@ program
   .command('build <type>')
   .description('自动构建项目')
   .action(libBuild)
+
+// deploy 发布项目
+program
+  .command('deploy <type>')
+  .description('自动发布项目')
+  .action(libDeploy)
 
 // 解析参数
 program.parse(process.argv)
