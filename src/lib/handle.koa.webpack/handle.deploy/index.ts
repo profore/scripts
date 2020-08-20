@@ -14,7 +14,8 @@ export default async (deployType:string):Promise<void> => {
   const fileName = `${funName}.zip`
 
   // 打包
-  const zip = new AdmZip()
+  // 如果有一个叫 build.zip 的压缩文件则读取
+  const zip = new AdmZip(fs.existsSync('dist/build.zip') ? 'dist/build.zip' : undefined)
   zip.addLocalFolder(distDir)
   zip.writeZip(fileName)
 
