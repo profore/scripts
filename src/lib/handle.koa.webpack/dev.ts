@@ -1,5 +1,6 @@
 import path from 'path'
 import fs from 'fs'
+
 export default async ():Promise<void> => {
   try {
     // 修改变量, 触发 webpack
@@ -19,15 +20,16 @@ export default async ():Promise<void> => {
     if (!fs.existsSync('dist')) fs.mkdirSync('dist')
     if (!fs.existsSync('dist/index.js')) fs.writeFileSync('dist/index.js', '')
 
+    process.chdir('dist')
     // 修改变量, 触发 nodemon
     process.argv = [
       ...process.argv.slice(0, 2),
       ...[
         '--delay',
         '500ms',
-        'dist/index.js',
+        'index.js',
         '--watch',
-        'dist/index.js'
+        'index.js'
       ]
     ]
     require('nodemon/bin/nodemon')

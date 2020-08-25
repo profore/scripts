@@ -1,5 +1,6 @@
 import webpack, { Configuration } from 'webpack'
 import path from 'path'
+import ApidocPlugin from './apidoc/plugin'
 
 // pofore.config.json
 const poforeConfig = require(path.join(process.cwd(), 'pofore.config.js'))
@@ -38,7 +39,8 @@ const config: Configuration = {
     ]
   },
   plugins: [
-    new webpack.DefinePlugin(definePluginData)
+    new webpack.DefinePlugin(definePluginData),
+    new ApidocPlugin()
   ]
 }
 
