@@ -1,4 +1,5 @@
 import path from 'path'
+import fs from 'fs'
 
 export default async ():Promise<void> => {
   try {
@@ -14,6 +15,12 @@ export default async ():Promise<void> => {
       ]
     ]
     require('webpack-cli')
+
+    // 提前创建 dist/index.js 防止报错
+    if (!fs.existsSync('dist')) fs.mkdirSync('dist')
+    if (!fs.existsSync('dist/index.js')) fs.writeFileSync('dist/index.js', '')
+    // 进入dist 与dev一致
+    process.chdir('dist')
   } catch (error) {
     console.log(error)
   }
