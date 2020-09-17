@@ -1,6 +1,6 @@
 {
   "name": "@pofore/scripts",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "A personal frontend scripts tool",
   "bin": {
     "pofore-scripts": "dist/bin/pofore.scripts.js"
