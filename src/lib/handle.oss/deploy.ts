@@ -22,6 +22,19 @@ export default async ():Promise<void> => {
   try {
     if (!poforeConfig.ossDeploy) return console.log('poforeConfig.ossDeploy not fined')
     const { uploadDir, ossConfig } = poforeConfig.ossDeploy
+
+    // 提示安全性 将 accessKey 封装到全局配置
+    if (!ossConfig.accessKeyId || !ossConfig.accessKeySecret) {
+      try {
+        // AliyunAccessKey
+        const poforeRootConfig = require(path.join(process.env.USERPROFILE || '.', '.pofore.js'))
+        ossConfig.accessKeyId = poforeRootConfig.AliyunAccessKeyId
+        ossConfig.accessKeySecret = poforeRootConfig.AliyunAccessKeySecret
+      } catch (error) {
+        throw new Error('\n No AliyunAccessKey init \n -- use "pofore-scripts init" --')
+      }
+    }
+
     const ossClient = new OSS(ossConfig)
     const arr = readFileList(uploadDir)
     console.log(arr)

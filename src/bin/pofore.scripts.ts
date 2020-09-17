@@ -10,6 +10,8 @@ import libDev from '../lib/dev'
 import libBuild from '../lib/build'
 // deploy 业务逻辑
 import libDeploy from '../lib/deploy'
+// init 业务逻辑
+import libInit from '../lib/init'
 
 // package.json
 const packagejson = require('../../package.json')
@@ -43,6 +45,12 @@ program
   .command('deploy <type>')
   .description('自动发布项目')
   .action(libDeploy)
+
+// init 生成全局配置文件
+program
+  .command('init')
+  .description('生成全局配置文件')
+  .action(libInit)
 
 // 解析参数
 program.parse(process.argv)
