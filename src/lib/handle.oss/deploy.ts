@@ -26,6 +26,9 @@ export default async ():Promise<void> => {
     // 提示安全性 将 accessKey 封装到全局配置
     if (!ossConfig.accessKeyId || !ossConfig.accessKeySecret) {
       try {
+        console.log(path.join(process.env.USERPROFILE || '.', '.pofore.js'))
+        console.log(process.env.AliyunAccessKeyId)
+        console.log(process.env.AliyunAccessKeySecret)
         // AliyunAccessKey
         const poforeRootConfig = require(path.join(process.env.USERPROFILE || '.', '.pofore.js'))
         ossConfig.accessKeyId = poforeRootConfig.AliyunAccessKeyId
