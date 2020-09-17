@@ -31,6 +31,7 @@ export default async ():Promise<void> => {
         ossConfig.accessKeyId = poforeRootConfig.AliyunAccessKeyId
         ossConfig.accessKeySecret = poforeRootConfig.AliyunAccessKeySecret
       } catch (error) {
+        console.log(error)
         throw new Error('\n No AliyunAccessKey init \n -- use "pofore-scripts init" --')
       }
     }
