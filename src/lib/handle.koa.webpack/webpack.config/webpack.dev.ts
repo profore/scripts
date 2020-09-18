@@ -1,6 +1,5 @@
 import merge from 'webpack-merge'
 import common from './webpack.common'
-import webpack from 'webpack'
 
 export default merge(common, {
   devtool: 'cheap-module-eval-source-map',
