@@ -19,34 +19,32 @@ function readFileList (dir:string, filesList:string[] = []) {
 }
 
 export default async ():Promise<void> => {
-  try {
-    if (!poforeConfig.ossDeploy) return console.log('poforeConfig.ossDeploy not fined')
-    const { uploadDir, ossConfig } = poforeConfig.ossDeploy
+  if (!poforeConfig.ossDeploy) return console.log('poforeConfig.ossDeploy not fined')
+  const { uploadDir, ossConfig } = poforeConfig.ossDeploy
 
-    // 提示安全性 将 accessKey 封装到全局配置
-    if (!ossConfig.accessKeyId || !ossConfig.accessKeySecret) {
-      try {
-        // AliyunAccessKey
-        const poforeRootConfig = require(path.join(process.env.USERPROFILE || process.cwd(), '.pofore.js'))
-        ossConfig.accessKeyId = poforeRootConfig.AliyunAccessKeyId
-        ossConfig.accessKeySecret = poforeRootConfig.AliyunAccessKeySecret
-      } catch (error) {
-        throw new Error('\n No AliyunAccessKey init \n -- use "pofore-scripts init" --')
-      }
+  // 提升安全性 将 accessKey 封装到全局环境配置
+  if (!ossConfig.accessKeyId || !ossConfig.accessKeySecret) {
+    // 如果有原配置文件 读取
+    const hasRootConfigFile = fs.existsSync(path.join(process.env.USERPROFILE || process.cwd(), '.pofore.js'))
+    if (hasRootConfigFile) {
+      const rootConfig = require(path.join(process.env.USERPROFILE || process.cwd(), '.pofore.js'))
+      // AliyunAccessKey
+      ossConfig.accessKeyId = rootConfig.AliyunAccessKeyId
+      ossConfig.accessKeySecret = rootConfig.AliyunAccessKeySecret
+    } else {
+      throw new Error('\n No AliyunAccessKey init \n -- use "pofore-scripts init" --')
     }
-
-    const ossClient = new OSS(ossConfig)
-    const arr = readFileList(uploadDir)
-    console.log(arr)
-    for (let index = 0; index < arr.length; index++) {
-      const element = arr[index]
-      const reg = new RegExp(`${uploadDir}/`)
-      const ossUrl = element.replace(reg, '')
-      await ossClient.put(ossUrl, element)
-      console.log('done', ossUrl)
-    }
-    console.log('done all')
-  } catch (error) {
-    console.log(error)
   }
+
+  const ossClient = new OSS(ossConfig)
+  const arr = readFileList(uploadDir)
+  console.log(arr)
+  for (let index = 0; index < arr.length; index++) {
+    const element = arr[index]
+    const reg = new RegExp(`${uploadDir}/`)
+    const ossUrl = element.replace(reg, '')
+    await ossClient.put(ossUrl, element)
+    console.log('done', ossUrl)
+  }
+  console.log('done all')
 }

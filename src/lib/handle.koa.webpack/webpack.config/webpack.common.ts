@@ -5,13 +5,13 @@ import ApidocPlugin from './apidoc/plugin'
 import CopyWebpackPlugin from 'copy-webpack-plugin'
 
 // pofore.config.json
-const poforeConfig = require(path.join(process.cwd(), 'pofore.config.js'))
+const { koaWebpackConfig } = require(path.join(process.cwd(), 'pofore.config.js'))
 interface StringObj {
   [key:string]:string
 }
 const definePluginData:StringObj = {}
-Object.keys(poforeConfig.defineData || {}).forEach(itemKey => {
-  definePluginData[itemKey] = JSON.stringify(poforeConfig.defineData[itemKey])
+Object.keys(koaWebpackConfig.defineData || {}).forEach(itemKey => {
+  definePluginData[itemKey] = JSON.stringify(koaWebpackConfig.defineData[itemKey])
 })
 
 const plugins = [
@@ -25,7 +25,7 @@ if (fs.existsSync(path.join(process.cwd(), 'public'))) {
 
 const config: Configuration = {
   externals: [
-    ...poforeConfig.externals || []
+    ...koaWebpackConfig.externals || []
   ],
   entry: `${process.cwd()}/src/index.ts`,
   target: 'node',
